@@ -2,11 +2,13 @@
 
 ## Project Overview
 
-This is a **Shopee-inspired e-commerce frontend** built with React 19, TypeScript, Vite, and shadcn/ui components. The project demonstrates a complete shopping experience with categories, product browsing, cart management, and checkout flows.
+This is a **Shopee-inspired e-commerce frontend & backend** built with React 19, TypeScript, Vite on the frontend and Node.js/Express with MySQL on the backend. The project demonstrates a complete shopping experience with categories, product browsing, cart management, checkout flows, and user authentication.
 
-## Architecture
+---
 
-### Tech Stack
+# Frontend Architecture
+
+## Tech Stack
 
 - **Runtime**: Bun 1.3.4 (package manager & runtime)
 - **Build**: Vite 7.2.7 with React SWC plugin
@@ -114,3 +116,104 @@ bun run lint         # Run ESLint
 - **Cart ↔ Navbar**: Navbar uses `useCart()` to display totalItems badge
 - **Product ↔ Detail**: ProductCard links to `/product/:id` (ProductDetail page fetches from mockData)
 - **Layout ↔ All Pages**: Navbar/Footer wrap every page; ensure consistent wrapper structure
+
+---
+
+# Backend Architecture
+
+## Tech Stack
+
+- **Runtime**: Node.js with ES modules
+- **Framework**: Express 4.18.2
+- **Database**: MySQL 8.0+ with mysql2 connection pool
+- **Authentication**: JWT (jsonwebtoken) + bcrypt for password hashing
+- **Validation**: express-validator
+- **CORS**: Configured for frontend at FRONTEND_URL
+
+## Folder Structure
+
+\\\
+backend/
+src/
+config/ # database.js (MySQL connection pool)
+controllers/ # authController.js (request handlers)
+middleware/ # auth.js (JWT verification, error handling)
+models/ # User.js (database operations)
+routes/ # authRoutes.js (API endpoints)
+utils/ # jwt.js, password.js (crypto utilities)
+scripts/ # initDb.js (database initialization)
+index.js # Express app entry point
+.env.example # Environment variables template
+package.json
+.gitignore
+\\\
+
+## Authentication Endpoints
+
+### Register (POST /api/auth/register)
+
+Valid email format, unique email, password >= 6 chars, fullName required
+
+### Login (POST /api/auth/login)
+
+Return JWT token on successful credentials
+
+### Get Profile (GET /api/auth/me)
+
+Header: Authorization: Bearer <token>
+
+## Database Schema - users table
+
+- **id**: INT AUTO_INCREMENT PRIMARY KEY
+- **email**: VARCHAR(255) UNIQUE NOT NULL
+- **password**: VARCHAR(255) NOT NULL (bcrypt hashed)
+- **full_name**: VARCHAR(255) NOT NULL
+- **phone, address, profile_image**: Optional fields
+- **status**: ENUM('active', 'inactive') DEFAULT 'active'
+- **created_at, updated_at**: TIMESTAMP fields with indexes on email and created_at
+
+## Key Backend Files
+
+- **backend/src/config/database.js**: MySQL pool & connection test
+- **backend/src/models/User.js**: User CRUD & password verification
+- **backend/src/utils/jwt.js**: generateToken(), verifyToken()
+- **backend/src/utils/password.js**: hashPassword(), comparePassword()
+- **backend/src/middleware/auth.js**: authenticateToken(), error handler
+- **backend/src/controllers/authController.js**: register, login, getCurrentUser
+- **backend/src/index.js**: Express app setup with routes & CORS
+
+## Backend Development Workflow
+
+### Setup
+
+\\\ash
+cd backend
+npm install
+cp .env.example .env # Configure DB credentials
+node src/scripts/initDb.js # Initialize database
+npm run dev # Start on http://localhost:5000
+\\\
+
+### Environment Variables
+
+DB_HOST=localhost, DB_USER=root, DB_NAME=shopee_red, PORT=5000, JWT_SECRET, JWT_EXPIRE=7d, FRONTEND_URL=http://localhost:8080
+
+### Adding Endpoints
+
+1. Create controller in backend/src/controllers/
+2. Add route in backend/src/routes/
+3. Mount in backend/src/index.js: app.use('/api/endpoint', routes)
+4. Use authenticateToken middleware for protected routes
+
+## Backend-Specific Notes
+
+- **MySQL Pool**: 10 concurrent connections, suitable for small-to-medium apps
+- **Error Format**: All errors return { success: false, message: "...", error?: {...} }
+- **Password Security**: bcrypt with 10 salt roundsnever store plaintext
+- **JWT Expiry**: 7 days by default; adjust JWT_EXPIRE in .env
+- **No Migrations**: Use initDb.js to initialize schema; manually alter for migrations
+- **CORS**: Enabled for FRONTEND_URL in backend/src/index.js
+
+## Frontend-Backend Integration
+
+**Auth Flow**: Register/Login -> POST to /api/auth/\* -> Store JWT in localStorage -> Include Authorization: Bearer <token> header in all requests -> Redirect to /auth/login on 401/403
