@@ -102,6 +102,45 @@ const Profile = () => {
     }));
   };
 
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          let { width, height } = img;
+
+          // Resize if too large (max 800px)
+          if (width > height) {
+            if (width > 800) {
+              height = Math.round((height * 800) / width);
+              width = 800;
+            }
+          } else {
+            if (height > 800) {
+              width = Math.round((width * 800) / height);
+              height = 800;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with 80% quality
+          const compressed = canvas.toDataURL("image/jpeg", 0.8);
+          resolve(compressed);
+        };
+        img.onerror = () => reject(new Error("Failed to load image"));
+      };
+      reader.onerror = () => reject(new Error("Failed to read file"));
+    });
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -127,12 +166,18 @@ const Profile = () => {
 
       setSelectedFile(file);
 
-      // Create preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      // Compress and create preview
+      compressImage(file)
+        .then((compressed) => {
+          setPreviewImage(compressed);
+        })
+        .catch(() => {
+          toast({
+            title: "Error",
+            description: "Gagal memproses gambar",
+            variant: "destructive",
+          });
+        });
     }
   };
 
