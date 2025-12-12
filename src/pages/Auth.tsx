@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+
+const API_BASE_URL = "http://localhost:5000/api";
 
 interface AuthPageProps {
   mode: "login" | "register";
@@ -14,6 +17,7 @@ interface AuthPageProps {
 const AuthPage = ({ mode }: AuthPageProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,37 +34,152 @@ const AuthPage = ({ mode }: AuthPageProps) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      if (mode === "register") {
+        // Validation
+        if (formData.password !== formData.confirmPassword) {
+          toast({
+            title: "Password tidak cocok",
+            description: "Pastikan password dan konfirmasi password sama",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+        if (!formData.agreeTerms) {
+          toast({
+            title: "Syarat & Ketentuan",
+            description: "Anda harus menyetujui syarat dan ketentuan",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
 
-    if (mode === "register") {
-      if (formData.password !== formData.confirmPassword) {
-        toast({
-          title: "Password tidak cocok",
-          description: "Pastikan password dan konfirmasi password sama",
-          variant: "destructive",
+        if (!formData.name || !formData.email || !formData.password) {
+          toast({
+            title: "Data tidak lengkap",
+            description: "Harap isi semua field yang wajib",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        // Register API call
+        const registerResponse = await fetch(`${API_BASE_URL}/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+            fullName: formData.name,
+          }),
         });
-        setIsLoading(false);
-        return;
-      }
-      if (!formData.agreeTerms) {
-        toast({
-          title: "Syarat & Ketentuan",
-          description: "Anda harus menyetujui syarat dan ketentuan",
-          variant: "destructive",
+
+        const registerData = await registerResponse.json();
+
+        if (!registerResponse.ok) {
+          toast({
+            title: "Registrasi Gagal",
+            description: registerData.message || "Terjadi kesalahan saat registrasi",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        // Store token
+        localStorage.setItem("authToken", registerData.data.token);
+        localStorage.setItem("user", JSON.stringify({
+          id: registerData.data.id,
+          email: registerData.data.email,
+          fullName: registerData.data.fullName,
+        }));
+
+        // Update auth context
+        login(registerData.data.token, {
+          id: registerData.data.id,
+          email: registerData.data.email,
+          fullName: registerData.data.fullName,
         });
-        setIsLoading(false);
-        return;
+
+        toast({
+          title: "Registrasi Berhasil!",
+          description: "Selamat bergabung dengan ShopRed",
+        });
+
+        navigate("/");
+      } else {
+        // Login
+        if (!formData.email || !formData.password) {
+          toast({
+            title: "Data tidak lengkap",
+            description: "Harap isi email dan password",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        // Login API call
+        const loginResponse = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        const loginData = await loginResponse.json();
+
+        if (!loginResponse.ok) {
+          toast({
+            title: "Login Gagal",
+            description: loginData.message || "Email atau password salah",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        // Store token
+        localStorage.setItem("authToken", loginData.data.token);
+        localStorage.setItem("user", JSON.stringify({
+          id: loginData.data.id,
+          email: loginData.data.email,
+          fullName: loginData.data.fullName,
+        }));
+
+        // Update auth context
+        login(loginData.data.token, {
+          id: loginData.data.id,
+          email: loginData.data.email,
+          fullName: loginData.data.fullName,
+        });
+
+        toast({
+          title: "Login Berhasil!",
+          description: "Selamat datang kembali di ShopRed",
+        });
+
+        navigate("/");
       }
+    } catch (error) {
+      console.error("Auth error:", error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Terjadi kesalahan jaringan",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
-
-    toast({
-      title: mode === "login" ? "Login Berhasil!" : "Registrasi Berhasil!",
-      description: "Selamat datang di ShopRed",
-    });
-
-    navigate("/");
-    setIsLoading(false);
   };
 
   return (

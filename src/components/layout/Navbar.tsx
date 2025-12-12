@@ -1,12 +1,15 @@
-import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, ChevronDown, Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Search, ShoppingCart, User, ChevronDown, Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 
 export function Navbar() {
   const { totalItems } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -15,6 +18,12 @@ export function Navbar() {
     if (searchQuery.trim()) {
       window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    setIsMenuOpen(false);
   };
 
   return (
@@ -93,16 +102,37 @@ export function Navbar() {
                 )}
               </Button>
             </Link>
-            <Link to="/auth/login" className="hidden sm:block">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-primary-foreground hover:bg-primary-foreground/10"
-              >
-                <User className="h-5 w-5 mr-2" />
-                Masuk
-              </Button>
-            </Link>
+            
+            {isAuthenticated && user ? (
+              <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-2 px-2 py-1 rounded-lg bg-primary-foreground/10">
+                  <User className="h-4 w-4 text-primary-foreground" />
+                  <span className="text-sm text-primary-foreground max-w-[120px] truncate">
+                    {user.fullName}
+                  </span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleLogout}
+                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                  title="Logout"
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </div>
+            ) : (
+              <Link to="/auth/login" className="hidden sm:block">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                >
+                  <User className="h-5 w-5 mr-2" />
+                  Masuk
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 
