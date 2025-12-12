@@ -24,7 +24,7 @@ interface UserData {
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, token, isAuthenticated } = useAuth();
+  const { user, token, isAuthenticated, isLoading: authIsLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
 
@@ -34,9 +34,16 @@ const Profile = () => {
     phone: "",
     address: "",
   });
+  const [createdAt, setCreatedAt] = useState<string>("");
 
   // Fetch user data
   useEffect(() => {
+    // Wait for auth to finish loading from localStorage
+    if (authIsLoading) {
+      return;
+    }
+
+    // Redirect if not authenticated
     if (!isAuthenticated || !token) {
       navigate("/auth/login");
       return;
@@ -60,6 +67,7 @@ const Profile = () => {
             phone: userData.phone || "",
             address: userData.address || "",
           });
+          setCreatedAt(userData.created_at || "");
         } else {
           toast({
             title: "Error",
@@ -79,7 +87,7 @@ const Profile = () => {
     };
 
     fetchUserProfile();
-  }, [isAuthenticated, token, navigate, toast]);
+  }, [authIsLoading, isAuthenticated, token, navigate, toast]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -164,6 +172,19 @@ const Profile = () => {
     );
   }
 
+  // Show loading while auth is initializing
+  if (authIsLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="flex items-center justify-center h-96">
+          <Loader className="h-8 w-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -202,10 +223,8 @@ const Profile = () => {
                     <div className="mt-6 w-full pt-6 border-t">
                       <p className="text-xs text-muted-foreground">
                         Akun dibuat sejak{" "}
-                        {user?.created_at
-                          ? new Date(user.created_at).toLocaleDateString(
-                              "id-ID"
-                            )
+                        {createdAt
+                          ? new Date(createdAt).toLocaleDateString("id-ID")
                           : "-"}
                       </p>
                     </div>

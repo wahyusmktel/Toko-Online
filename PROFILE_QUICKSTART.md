@@ -16,6 +16,7 @@ Halaman edit profil user sudah siap digunakan dengan fitur lengkap:
 ## 🚀 How to Test (5 Minutes)
 
 ### Step 1: Login
+
 ```
 1. Go to http://localhost:8083/auth/login
 2. Enter registered email & password
@@ -23,6 +24,7 @@ Halaman edit profil user sudah siap digunakan dengan fitur lengkap:
 ```
 
 ### Step 2: Click Settings Button
+
 ```
 1. Look at navbar (logged in state)
 2. Click the settings icon (⚙️) next to logout
@@ -30,6 +32,7 @@ Halaman edit profil user sudah siap digunakan dengan fitur lengkap:
 ```
 
 ### Step 3: Edit Profile
+
 ```
 1. Change nama lengkap, telepon, atau alamat
 2. Click "Simpan Perubahan" button
@@ -37,6 +40,7 @@ Halaman edit profil user sudah siap digunakan dengan fitur lengkap:
 ```
 
 ### Step 4: Verify Changes
+
 ```
 1. Refresh page (F5)
 2. Check if changes persist
@@ -47,17 +51,18 @@ Halaman edit profil user sudah siap digunakan dengan fitur lengkap:
 
 ## 📍 URL & Navigation
 
-| Action | URL | How to Access |
-|--------|-----|---------------|
-| View Profile | `/profile` | Click settings icon in navbar |
+| Action       | URL        | How to Access                       |
+| ------------ | ---------- | ----------------------------------- |
+| View Profile | `/profile` | Click settings icon in navbar       |
 | Edit Profile | `/profile` | Same page (form below profile card) |
-| Back to Home | `/` | Click "Batal" button |
+| Back to Home | `/`        | Click "Batal" button                |
 
 ---
 
 ## 🔧 API Endpoint
 
 ### Update Profile
+
 ```bash
 PUT /api/auth/me
 Authorization: Bearer <token>
@@ -75,23 +80,25 @@ Body:
 
 ## 📝 Form Fields
 
-| Field | Type | Required | Editable | Rules |
-|-------|------|----------|----------|-------|
-| Nama Lengkap | Text | Yes | ✅ | Min 1 char |
-| Email | Text | No | ❌ | Read-only |
-| Telepon | Phone | No | ✅ | Format: +62 or digits |
-| Alamat | Text | No | ✅ | Any text |
+| Field        | Type  | Required | Editable | Rules                 |
+| ------------ | ----- | -------- | -------- | --------------------- |
+| Nama Lengkap | Text  | Yes      | ✅       | Min 1 char            |
+| Email        | Text  | No       | ❌       | Read-only             |
+| Telepon      | Phone | No       | ✅       | Format: +62 or digits |
+| Alamat       | Text  | No       | ✅       | Any text              |
 
 ---
 
 ## 🛡️ Validation
 
 **Akan muncul error jika:**
+
 - Nama kosong: "Nama lengkap tidak boleh kosong"
 - Telepon salah format: "Format nomor telepon tidak valid"
 - Network error: "Gagal memperbarui profil"
 
 **Contoh format telepon yang valid:**
+
 - `+62 812 3456 7890`
 - `0812-3456-7890`
 - `(021) 1234 5678`
@@ -101,12 +108,14 @@ Body:
 ## 🎨 UI Components
 
 ### Sidebar (Left)
+
 - Avatar placeholder (user icon)
 - Nama user
 - Email
 - Tanggal akun dibuat
 
 ### Form Area (Right)
+
 - Input field: Nama Lengkap
 - Input field: Email (disabled)
 - Input field: Telepon
@@ -119,9 +128,11 @@ Body:
 ## 📋 File Changes
 
 ### Created
+
 - `src/pages/Profile.tsx` - Profile page component
 
 ### Modified
+
 - `src/App.tsx` - Added /profile route
 - `src/components/layout/Navbar.tsx` - Added settings button
 - `backend/src/controllers/authController.js` - Added updateProfile()
@@ -133,6 +144,7 @@ Body:
 ## 🧪 Testing Scenarios
 
 ### Scenario 1: Edit Nama
+
 ```
 1. Login
 2. Go to profile
@@ -143,6 +155,7 @@ Body:
 ```
 
 ### Scenario 2: Add Telepon & Alamat
+
 ```
 1. Profile page
 2. Fill telepon: +62 812 3456 7890
@@ -152,6 +165,7 @@ Body:
 ```
 
 ### Scenario 3: Invalid Telepon
+
 ```
 1. Fill telepon: abc123
 2. Click Simpan
@@ -160,6 +174,7 @@ Body:
 ```
 
 ### Scenario 4: Empty Nama
+
 ```
 1. Clear nama field
 2. Click Simpan
@@ -180,19 +195,20 @@ Body:
 
 ## 🐛 Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| Can't access profile | Login first |
-| Settings button missing | Check if logged in |
-| Changes not saving | Check internet connection |
-| Backend error | Verify backend running on 5000 |
-| "Format tidak valid" | Use +62 format for phone |
+| Problem                 | Solution                       |
+| ----------------------- | ------------------------------ |
+| Can't access profile    | Login first                    |
+| Settings button missing | Check if logged in             |
+| Changes not saving      | Check internet connection      |
+| Backend error           | Verify backend running on 5000 |
+| "Format tidak valid"    | Use +62 format for phone       |
 
 ---
 
 ## 📊 Database Changes
 
 Database sudah ready dengan fields:
+
 - `full_name` - Nama lengkap (required)
 - `phone` - Nomor telepon (optional)
 - `address` - Alamat (optional)
@@ -203,11 +219,12 @@ Database sudah ready dengan fields:
 ## 💡 Tips
 
 **Quick Test:**
+
 ```bash
 # Terminal 1: Backend
 cd backend && node src/index.js
 
-# Terminal 2: Frontend  
+# Terminal 2: Frontend
 npm run dev
 
 # Browser: http://localhost:8083/auth/login
@@ -215,6 +232,7 @@ npm run dev
 ```
 
 **Check Changes in DB:**
+
 ```bash
 mysql -u root shopee_red
 SELECT id, email, full_name, phone, address FROM users;

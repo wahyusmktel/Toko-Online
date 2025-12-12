@@ -4,6 +4,10 @@ export interface User {
   id: number;
   email: string;
   fullName: string;
+  phone?: string;
+  address?: string;
+  profileImage?: string;
+  createdAt?: string;
 }
 
 export interface AuthContextType {

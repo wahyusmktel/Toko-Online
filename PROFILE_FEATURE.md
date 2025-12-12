@@ -11,6 +11,7 @@ Added complete user profile management system allowing users to view and edit th
 ### Backend Changes
 
 #### 1. New Controller Function - `updateProfile()`
+
 **File**: `backend/src/controllers/authController.js`
 
 - Validates input data (name, phone, address)
@@ -19,6 +20,7 @@ Added complete user profile management system allowing users to view and edit th
 - Handles errors gracefully
 
 #### 2. New Model Method - `updateProfile()`
+
 **File**: `backend/src/models/User.js`
 
 - Updates user data in database
@@ -26,6 +28,7 @@ Added complete user profile management system allowing users to view and edit th
 - Returns updated user object
 
 #### 3. New Route - `PUT /api/auth/me`
+
 **File**: `backend/src/routes/authRoutes.js`
 
 - Protected route (requires JWT token)
@@ -42,9 +45,11 @@ Added complete user profile management system allowing users to view and edit th
 ### Frontend Changes
 
 #### 1. New Profile Page
+
 **File**: `src/pages/Profile.tsx`
 
 Features:
+
 - Shows current user information
 - Edit form for name, phone, and address
 - Email displayed as read-only
@@ -54,20 +59,24 @@ Features:
 - Auto-redirect to login if not authenticated
 
 Layout:
+
 - Sidebar with user profile summary
 - Main form area for editing
 - Responsive design (mobile-friendly)
 
 #### 2. Updated App Routes
+
 **File**: `src/App.tsx`
 
 - Added route: `/profile` → Profile page
 - Imported Profile component
 
 #### 3. Updated Navbar
+
 **File**: `src/components/layout/Navbar.tsx`
 
 Changes:
+
 - Added Settings icon button (edit profile)
 - Clicking settings button navigates to `/profile`
 - New icon import: `Settings` from lucide-react
@@ -77,6 +86,7 @@ Changes:
 ## API Endpoint Specifications
 
 ### GET /api/auth/me (Existing - Used to fetch current profile)
+
 ```
 Authorization: Bearer <token>
 
@@ -95,6 +105,7 @@ Response:
 ```
 
 ### PUT /api/auth/me (NEW - Update user profile)
+
 ```
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -124,6 +135,7 @@ Response:
 ### Error Responses
 
 **Missing Full Name (400)**
+
 ```json
 {
   "success": false,
@@ -132,6 +144,7 @@ Response:
 ```
 
 **Invalid Phone Format (400)**
+
 ```json
 {
   "success": false,
@@ -140,6 +153,7 @@ Response:
 ```
 
 **User Not Found (404)**
+
 ```json
 {
   "success": false,
@@ -152,17 +166,20 @@ Response:
 ## How to Use
 
 ### 1. View Profile
+
 - After login, click the Settings icon (⚙️) in navbar
 - Or navigate to `/profile` directly
 - Profile page loads current user information
 
 ### 2. Edit Profile
+
 - Update any field (name, phone, address)
 - Email is read-only (cannot be changed)
 - Click "Simpan Perubahan" (Save Changes) button
 - Success message appears if update successful
 
 ### 3. Error Handling
+
 - Empty name: Shows error toast
 - Invalid phone format: Shows error toast
 - Network error: Shows error toast
@@ -173,6 +190,7 @@ Response:
 ## Database Schema (Updated)
 
 The `users` table already has these columns:
+
 ```sql
 id INT AUTO_INCREMENT PRIMARY KEY
 email VARCHAR(255) UNIQUE NOT NULL
@@ -219,14 +237,17 @@ backend/
 ### Manual Test Steps
 
 1. **Login to account**
+
    - Visit `http://localhost:8083/auth/login`
    - Enter credentials
 
 2. **Navigate to Profile**
+
    - Click Settings icon (⚙️) in navbar
    - Or visit `http://localhost:8083/profile` directly
 
 3. **Edit Information**
+
    - Change name, phone, or address
    - Click "Simpan Perubahan" button
    - Verify success toast message
@@ -239,6 +260,7 @@ backend/
 ### API Test with curl
 
 **Test Update Profile**
+
 ```bash
 curl -X PUT http://localhost:5000/api/auth/me \
   -H "Content-Type: application/json" \
@@ -257,16 +279,19 @@ curl -X PUT http://localhost:5000/api/auth/me \
 ### Profile Page Components
 
 **Header Section**
+
 - Page title: "Profil Saya"
 - Subtitle: "Kelola informasi akun Anda"
 
 **Sidebar**
+
 - User avatar (icon placeholder)
 - Full name display
 - Email display
 - Account creation date
 
 **Form Section**
+
 - Full Name field (required, editable)
 - Email field (read-only)
 - Phone field (optional, with validation)
@@ -274,6 +299,7 @@ curl -X PUT http://localhost:5000/api/auth/me \
 - Save and Cancel buttons
 
 **Loading State**
+
 - Shows spinner while fetching
 - Prevents duplicate submissions
 
@@ -281,16 +307,18 @@ curl -X PUT http://localhost:5000/api/auth/me \
 
 ## Validation Rules
 
-| Field | Rules | Error Message |
-|-------|-------|---------------|
-| Full Name | Required, not empty | "Nama lengkap tidak boleh kosong" |
-| Phone | Optional, valid format | "Format nomor telepon tidak valid" |
-| Address | Optional, any text | - |
-| Email | Read-only | Not editable |
+| Field     | Rules                  | Error Message                      |
+| --------- | ---------------------- | ---------------------------------- |
+| Full Name | Required, not empty    | "Nama lengkap tidak boleh kosong"  |
+| Phone     | Optional, valid format | "Format nomor telepon tidak valid" |
+| Address   | Optional, any text     | -                                  |
+| Email     | Read-only              | Not editable                       |
 
 ### Phone Format Validation
+
 Accepts: numbers, `+`, `-`, spaces, parentheses
 Example valid formats:
+
 - `+62 812 3456 7890`
 - `0812-3456-7890`
 - `(021) 1234 5678`
@@ -332,6 +360,7 @@ Update UI (optional: update navbar)
 ## State Management
 
 ### useAuth Hook Integration
+
 ```typescript
 const { user, token, isAuthenticated } = useAuth();
 
@@ -341,12 +370,13 @@ const { user, token, isAuthenticated } = useAuth();
 ```
 
 ### Component State
+
 ```typescript
 const [formData, setFormData] = useState({
   fullName: "",
   email: "",
   phone: "",
-  address: ""
+  address: "",
 });
 
 const [isLoading, setIsLoading] = useState(false);
@@ -358,16 +388,19 @@ const [isFetching, setIsFetching] = useState(true);
 ## Error Handling
 
 **Network Errors**
+
 - Caught in try-catch block
 - Shows generic error toast
 - User can retry
 
 **Validation Errors**
+
 - Checked client-side first
 - Also validated server-side
 - Clear error messages shown
 
 **Authentication Errors**
+
 - Auto-redirect to login if token invalid
 - Clears corrupted session data
 
@@ -376,6 +409,7 @@ const [isFetching, setIsFetching] = useState(true);
 ## Security Considerations
 
 ✅ **Implemented**
+
 - JWT token required (protected route)
 - Server-side validation
 - Input sanitization
@@ -383,6 +417,7 @@ const [isFetching, setIsFetching] = useState(true);
 - User can only edit their own profile
 
 ✅ **Best Practices**
+
 - Token sent in Authorization header
 - HTTPS-ready (production deployment)
 - Password not editable (security)
@@ -393,6 +428,7 @@ const [isFetching, setIsFetching] = useState(true);
 ## Future Enhancements
 
 Possible additions:
+
 1. **Avatar Upload** - Profile picture functionality
 2. **Phone Verification** - Verify phone number with OTP
 3. **Address Book** - Multiple saved addresses
@@ -404,29 +440,32 @@ Possible additions:
 
 ## Troubleshooting
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Can't access profile | Not authenticated | Login first |
-| Profile page blank | API not responding | Check backend running |
-| Changes not saving | Network error | Check internet connection |
-| "Invalid phone" error | Wrong format | Use +62 format or standard |
-| Page redirects to login | Token expired | Re-login |
+| Issue                   | Cause              | Solution                   |
+| ----------------------- | ------------------ | -------------------------- |
+| Can't access profile    | Not authenticated  | Login first                |
+| Profile page blank      | API not responding | Check backend running      |
+| Changes not saving      | Network error      | Check internet connection  |
+| "Invalid phone" error   | Wrong format       | Use +62 format or standard |
+| Page redirects to login | Token expired      | Re-login                   |
 
 ---
 
 ## Quick Commands
 
 **Start Backend**
+
 ```bash
 cd backend && node src/index.js
 ```
 
 **Start Frontend**
+
 ```bash
 npm run dev
 ```
 
 **Test Profile Update**
+
 ```bash
 # Get token from login first
 curl -X PUT http://localhost:5000/api/auth/me \
@@ -444,6 +483,7 @@ curl -X PUT http://localhost:5000/api/auth/me \
 ## Summary
 
 ✅ **Fully Implemented**
+
 - Backend endpoint for profile updates
 - Frontend profile editing page
 - Form validation
@@ -453,6 +493,7 @@ curl -X PUT http://localhost:5000/api/auth/me \
 - Responsive UI design
 
 🚀 **Ready for Production**
+
 - All components tested
 - Error handling comprehensive
 - Security best practices followed
