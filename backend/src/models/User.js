@@ -24,7 +24,7 @@ export class UserModel {
   // Find user by ID
   static async findById(id) {
     const query =
-      "SELECT id, email, full_name, created_at FROM users WHERE id = ?";
+      "SELECT id, email, full_name, phone, address, profile_image, created_at FROM users WHERE id = ?";
     const [rows] = await pool.query(query, [id]);
     return rows[0] || null;
   }

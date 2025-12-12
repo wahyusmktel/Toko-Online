@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, Phone, MapPin, Loader } from "lucide-react";
+import { User, Mail, Phone, MapPin, Loader, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +35,9 @@ const Profile = () => {
     address: "",
   });
   const [createdAt, setCreatedAt] = useState<string>("");
+  const [profileImage, setProfileImage] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string>("");
 
   // Fetch user data
   useEffect(() => {
@@ -68,6 +71,8 @@ const Profile = () => {
             address: userData.address || "",
           });
           setCreatedAt(userData.created_at || "");
+          setProfileImage(userData.profile_image || "");
+          setPreviewImage(userData.profile_image || "");
         } else {
           toast({
             title: "Error",
@@ -97,6 +102,40 @@ const Profile = () => {
     }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        toast({
+          title: "Error",
+          description: "File harus berupa gambar",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Error",
+          description: "Ukuran file maksimal 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setSelectedFile(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -122,22 +161,42 @@ const Profile = () => {
     setIsLoading(true);
 
     try {
+      const requestBody: any = {
+        fullName: formData.fullName,
+        phone: formData.phone || null,
+        address: formData.address || null,
+      };
+
+      // If file selected, add base64 image to request
+      if (selectedFile) {
+        requestBody.profileImage = previewImage;
+      }
+
       const response = await fetch(`${API_BASE_URL}/auth/me`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          fullName: formData.fullName,
-          phone: formData.phone || null,
-          address: formData.address || null,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
 
       if (data.success) {
+        // Update formData dengan response dari API
+        const userData = data.data;
+        setFormData({
+          fullName: userData.full_name || "",
+          email: userData.email || "",
+          phone: userData.phone || "",
+          address: userData.address || "",
+        });
+        setCreatedAt(userData.created_at || "");
+        setProfileImage(userData.profile_image || "");
+        setPreviewImage(userData.profile_image || "");
+        setSelectedFile(null);
+
         toast({
           title: "Sukses",
           description: "Profil berhasil diperbarui",
@@ -211,9 +270,35 @@ const Profile = () => {
               <div className="lg:col-span-1">
                 <div className="rounded-lg border bg-card p-6">
                   <div className="flex flex-col items-center text-center">
-                    <div className="rounded-full bg-primary/10 p-4 mb-4">
-                      <User className="h-8 w-8 text-primary" />
+                    {/* Profile Picture */}
+                    <div className="relative mb-4">
+                      <div className="rounded-full bg-primary/10 p-4 w-24 h-24 flex items-center justify-center overflow-hidden border-2 border-primary/20">
+                        {previewImage ? (
+                          <img
+                            src={previewImage}
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <User className="h-12 w-12 text-primary" />
+                        )}
+                      </div>
+                      <label
+                        htmlFor="profile-upload"
+                        className="absolute bottom-0 right-0 bg-primary rounded-full p-2 cursor-pointer hover:bg-primary/90 transition"
+                      >
+                        <Camera className="h-4 w-4 text-primary-foreground" />
+                      </label>
+                      <input
+                        id="profile-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                        disabled={isLoading}
+                      />
                     </div>
+
                     <h2 className="text-lg font-semibold text-foreground">
                       {formData.fullName}
                     </h2>
