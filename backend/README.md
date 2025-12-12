@@ -5,29 +5,34 @@ Backend e-commerce API dibangun dengan Express.js, MySQL, dan JWT authentication
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js v18+ 
+
+- Node.js v18+
 - MySQL 5.7+ atau MariaDB
 - npm atau yarn
 
 ### Installation
 
 1. **Install dependencies**
+
    ```bash
    cd backend
    npm install
    ```
 
 2. **Setup environment**
+
    ```bash
    cp .env.example .env
    ```
 
 3. **Initialize database**
+
    ```bash
    node src/scripts/initDb.js
    ```
 
 4. **Start server**
+
    ```bash
    # Development (with auto-reload)
    npm run dev
@@ -41,6 +46,7 @@ Server akan berjalan di `http://localhost:5000`
 ## 📖 API Documentation
 
 ### Base URL
+
 ```
 http://localhost:5000/api
 ```
@@ -48,9 +54,11 @@ http://localhost:5000/api
 ### Authentication Endpoints
 
 #### POST `/auth/register`
+
 Registrasi user baru
 
 **Request:**
+
 ```json
 {
   "email": "user@example.com",
@@ -60,6 +68,7 @@ Registrasi user baru
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -74,6 +83,7 @@ Registrasi user baru
 ```
 
 **Validations:**
+
 - Email harus valid dan unik
 - Password minimal 6 karakter
 - fullName required
@@ -81,9 +91,11 @@ Registrasi user baru
 ---
 
 #### POST `/auth/login`
+
 Login dan dapatkan JWT token
 
 **Request:**
+
 ```json
 {
   "email": "user@example.com",
@@ -92,6 +104,7 @@ Login dan dapatkan JWT token
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -108,14 +121,17 @@ Login dan dapatkan JWT token
 ---
 
 #### GET `/auth/me`
+
 Get profil user yang sedang login
 
 **Headers:**
+
 ```
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -131,9 +147,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ---
 
 #### GET `/health`
+
 Health check endpoint
 
 **Response (200):**
+
 ```json
 {
   "status": "Server is running"
@@ -143,6 +161,7 @@ Health check endpoint
 ## 🗄️ Database Schema
 
 ### users table
+
 ```sql
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -228,6 +247,7 @@ backend/
 ## 📚 Adding New Endpoints
 
 ### 1. Create Controller
+
 ```javascript
 // src/controllers/productController.js
 export async function getProducts(req, res, next) {
@@ -241,27 +261,30 @@ export async function getProducts(req, res, next) {
 ```
 
 ### 2. Create Routes
+
 ```javascript
 // src/routes/productRoutes.js
-import express from 'express';
-import { getProducts } from '../controllers/productController.js';
-import { authenticateToken } from '../middleware/auth.js';
+import express from "express";
+import { getProducts } from "../controllers/productController.js";
+import { authenticateToken } from "../middleware/auth.js";
 
 const router = express.Router();
-router.get('/', authenticateToken, getProducts);
+router.get("/", authenticateToken, getProducts);
 export default router;
 ```
 
 ### 3. Mount in App
+
 ```javascript
 // src/index.js
-import productRoutes from './routes/productRoutes.js';
-app.use('/api/products', productRoutes);
+import productRoutes from "./routes/productRoutes.js";
+app.use("/api/products", productRoutes);
 ```
 
 ## 🧪 Testing API
 
 ### Using cURL
+
 ```bash
 # Register
 curl -X POST http://localhost:5000/api/auth/register \
@@ -279,6 +302,7 @@ curl -X GET http://localhost:5000/api/auth/me \
 ```
 
 ### Using Postman
+
 1. Create POST request to `http://localhost:5000/api/auth/register`
 2. Set Body → raw → JSON
 3. Copy token from response
@@ -286,12 +310,12 @@ curl -X GET http://localhost:5000/api/auth/me \
 
 ## 🐛 Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| `MySQL connection failed` | Pastikan MySQL running, check .env credentials |
-| `Port 5000 already in use` | Ubah PORT di .env atau kill process |
-| `auth_gssapi_client error` | Gunakan script initDb.js yang sudah fixed |
-| `Module not found` | Jalankan `npm install` di folder backend |
+| Issue                      | Solution                                       |
+| -------------------------- | ---------------------------------------------- |
+| `MySQL connection failed`  | Pastikan MySQL running, check .env credentials |
+| `Port 5000 already in use` | Ubah PORT di .env atau kill process            |
+| `auth_gssapi_client error` | Gunakan script initDb.js yang sudah fixed      |
+| `Module not found`         | Jalankan `npm install` di folder backend       |
 
 ## 📦 Dependencies
 

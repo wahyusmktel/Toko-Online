@@ -3,17 +3,20 @@
 ## ✅ Setup Completed Successfully
 
 ### 1. Dependencies Installation ✓
+
 ```bash
 npm install
 ```
+
 - Express 4.18.2
-- MySQL2 3.6.5 
+- MySQL2 3.6.5
 - jsonwebtoken 8.5.1 (stable version)
 - bcrypt 5.0.1
 - dotenv, cors, express-validator
 - Total: 250 packages installed
 
 ### 2. Environment Configuration ✓
+
 **File**: `backend/.env`
 
 ```
@@ -30,9 +33,11 @@ FRONTEND_URL=http://localhost:8080
 ```
 
 ### 3. Database Initialization ✓
+
 **Command**: `node src/scripts/initDb.js`
 
 Output:
+
 ```
 ✓ Database initialized successfully
 ✓ Database 'shopee_red' created or already exists
@@ -40,6 +45,7 @@ Output:
 ```
 
 **Tables Created**:
+
 - `users` table with the following fields:
   - id (INT AUTO_INCREMENT PRIMARY KEY)
   - email (VARCHAR(255) UNIQUE NOT NULL)
@@ -50,15 +56,18 @@ Output:
   - created_at, updated_at (TIMESTAMP with indexes)
 
 ### 4. Backend Server Status ✓
+
 **Command**: `node src/index.js`
 
 Output:
+
 ```
 ✓ MySQL connection successful
 ✓ Server running on http://localhost:5000
 ```
 
 **Server Details**:
+
 - Port: 5000
 - Environment: development
 - CORS enabled for http://localhost:8080
@@ -68,15 +77,16 @@ Output:
 
 ### Authentication Routes (prefix: `/api/auth`)
 
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/register` | POST | ❌ | Register new user |
-| `/login` | POST | ❌ | Login and get JWT token |
-| `/me` | GET | ✅ Bearer Token | Get current user profile |
+| Endpoint    | Method | Auth            | Description              |
+| ----------- | ------ | --------------- | ------------------------ |
+| `/register` | POST   | ❌              | Register new user        |
+| `/login`    | POST   | ❌              | Login and get JWT token  |
+| `/me`       | GET    | ✅ Bearer Token | Get current user profile |
 
 ### Request/Response Examples
 
 #### Register
+
 ```bash
 POST http://localhost:5000/api/auth/register
 Content-Type: application/json
@@ -101,6 +111,7 @@ Response (201):
 ```
 
 #### Login
+
 ```bash
 POST http://localhost:5000/api/auth/login
 Content-Type: application/json
@@ -124,6 +135,7 @@ Response (200):
 ```
 
 #### Get Profile
+
 ```bash
 GET http://localhost:5000/api/auth/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
@@ -143,6 +155,7 @@ Response (200):
 ## 🚀 How to Run Backend
 
 ### Development Mode (with auto-reload)
+
 ```bash
 cd backend
 npm run dev
@@ -150,6 +163,7 @@ npm run dev
 ```
 
 ### Production Mode
+
 ```bash
 cd backend
 node src/index.js
@@ -158,15 +172,18 @@ node src/index.js
 ## 🔧 Troubleshooting
 
 ### If MySQL Connection Fails
+
 - Ensure MySQL/MariaDB service is running
 - Check DB_HOST, DB_USER, DB_PASSWORD in .env
 - Verify database `shopee_red` exists: `node src/scripts/initDb.js`
 
 ### If Port 5000 is Already in Use
+
 - Change PORT in .env file
 - Or kill the process: `lsof -ti:5000 | xargs kill -9` (Linux/Mac)
 
 ### If `npm install` Fails
+
 - Clear cache: `npm cache clean --force`
 - Delete node_modules and package-lock.json
 - Run `npm install` again
@@ -205,6 +222,7 @@ backend/
 4. **Deploy** - Set up production environment with real JWT_SECRET
 
 ---
+
 **Setup Date**: 2025-12-12
 **Backend Version**: 1.0.0
 **Node.js**: v22.17.0

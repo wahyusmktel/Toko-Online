@@ -5,6 +5,7 @@ This document confirms that the authentication system has been fully integrated 
 ## System Status
 
 ### Backend
+
 - **Status**: ✓ Running on `http://localhost:5000`
 - **Database**: ✓ MySQL shopee_red initialized with users table
 - **Endpoints**:
@@ -13,8 +14,9 @@ This document confirms that the authentication system has been fully integrated 
   - `GET /api/auth/me` - Get current user (protected endpoint)
 
 ### Frontend
+
 - **Status**: ✓ Running on `http://localhost:8083`
-- **Auth Pages**: 
+- **Auth Pages**:
   - `/auth/login` - Login form with email/password
   - `/auth/register` - Registration form with validation
 - **Auth State Management**: ✓ useAuth hook in `src/hooks/useAuth.ts`
@@ -23,6 +25,7 @@ This document confirms that the authentication system has been fully integrated 
 ## Frontend Components Updated
 
 ### 1. Auth Page (`src/pages/Auth.tsx`)
+
 - Integrated with backend API endpoints
 - Form validation (email format, password length)
 - API calls to `/api/auth/register` and `/api/auth/login`
@@ -31,6 +34,7 @@ This document confirms that the authentication system has been fully integrated 
 - Stores JWT token and user data in localStorage
 
 ### 2. useAuth Hook (`src/hooks/useAuth.ts`)
+
 - Manages global authentication state
 - Functions:
   - `login(token, user)` - Store token and user
@@ -39,6 +43,7 @@ This document confirms that the authentication system has been fully integrated 
 - Returns: `{ user, token, isLoading, isAuthenticated, login, logout }`
 
 ### 3. Navbar (`src/components/layout/Navbar.tsx`)
+
 - **When Authenticated**: Shows user's full name + logout button
 - **When Not Authenticated**: Shows "Masuk" (Login) button
 - Logout function clears auth state and redirects to home
@@ -47,6 +52,7 @@ This document confirms that the authentication system has been fully integrated 
 ## Testing the Authentication Flow
 
 ### Step 1: Register a New Account
+
 1. Navigate to `http://localhost:8083/auth/register`
 2. Fill in the form:
    - **Name**: Your full name
@@ -57,18 +63,21 @@ This document confirms that the authentication system has been fully integrated 
 4. If successful, you'll be redirected to home and see your name in the navbar
 
 ### Step 2: Login
+
 1. Navigate to `http://localhost:8083/auth/login`
 2. Enter the email and password from registration
 3. Click "Masuk" (Login)
 4. If successful, you'll see your user info in the navbar
 
 ### Step 3: Logout
+
 1. Click the logout button (LogOut icon) next to your name in the navbar
 2. You'll be redirected to home and the navbar will show "Masuk" button again
 
 ## API Request Examples
 
 ### Register
+
 ```bash
 curl -X POST http://localhost:5000/api/auth/register \
   -H "Content-Type: application/json" \
@@ -80,6 +89,7 @@ curl -X POST http://localhost:5000/api/auth/register \
 ```
 
 **Response on Success**:
+
 ```json
 {
   "success": true,
@@ -94,6 +104,7 @@ curl -X POST http://localhost:5000/api/auth/register \
 ```
 
 ### Login
+
 ```bash
 curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
@@ -104,6 +115,7 @@ curl -X POST http://localhost:5000/api/auth/login \
 ```
 
 **Response on Success**:
+
 ```json
 {
   "success": true,
@@ -120,6 +132,7 @@ curl -X POST http://localhost:5000/api/auth/login \
 ```
 
 ### Get Current User (Protected)
+
 ```bash
 curl -X GET http://localhost:5000/api/auth/me \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -165,18 +178,22 @@ Express Backend
 ## Troubleshooting
 
 ### "Connection refused" on port 5000
+
 - Ensure backend is running: `cd backend && node src/index.js`
 - Verify database credentials in `backend/.env`
 
 ### "Cannot POST /api/auth/register"
+
 - Check backend server is running
 - Verify routes are mounted in `backend/src/index.js`
 
 ### Token not persisting
+
 - Check browser localStorage is enabled
 - Verify token is being returned from API
 
 ### CORS errors
+
 - Update `FRONTEND_URL` in `backend/.env` to match frontend URL
 - Restart backend server
 

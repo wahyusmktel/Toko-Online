@@ -1,5 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingCart, User, ChevronDown, Menu, X, LogOut } from "lucide-react";
+import {
+  Search,
+  ShoppingCart,
+  User,
+  ChevronDown,
+  Menu,
+  X,
+  LogOut,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
@@ -16,7 +24,9 @@ export function Navbar() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
+      window.location.href = `/products?search=${encodeURIComponent(
+        searchQuery
+      )}`;
     }
   };
 
@@ -53,7 +63,11 @@ export function Navbar() {
             className="md:hidden text-primary-foreground hover:bg-primary-foreground/10"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </Button>
 
           {/* Logo */}
@@ -102,7 +116,7 @@ export function Navbar() {
                 )}
               </Button>
             </Link>
-            
+
             {isAuthenticated && user ? (
               <div className="flex items-center gap-2">
                 <div className="hidden sm:flex items-center gap-2 px-2 py-1 rounded-lg bg-primary-foreground/10">
@@ -138,19 +152,34 @@ export function Navbar() {
 
         {/* Categories Bar - Desktop */}
         <nav className="hidden md:flex items-center gap-6 mt-3 text-sm text-primary-foreground/90">
-          <Link to="/products" className="hover:text-primary-foreground transition-colors flex items-center gap-1">
+          <Link
+            to="/products"
+            className="hover:text-primary-foreground transition-colors flex items-center gap-1"
+          >
             Semua Kategori <ChevronDown className="h-4 w-4" />
           </Link>
-          <Link to="/products?category=elektronik" className="hover:text-primary-foreground transition-colors">
+          <Link
+            to="/products?category=elektronik"
+            className="hover:text-primary-foreground transition-colors"
+          >
             Elektronik
           </Link>
-          <Link to="/products?category=fashion" className="hover:text-primary-foreground transition-colors">
+          <Link
+            to="/products?category=fashion"
+            className="hover:text-primary-foreground transition-colors"
+          >
             Fashion
           </Link>
-          <Link to="/products?category=kecantikan" className="hover:text-primary-foreground transition-colors">
+          <Link
+            to="/products?category=kecantikan"
+            className="hover:text-primary-foreground transition-colors"
+          >
             Kecantikan
           </Link>
-          <Link to="/flash-sale" className="hover:text-primary-foreground transition-colors font-semibold">
+          <Link
+            to="/flash-sale"
+            className="hover:text-primary-foreground transition-colors font-semibold"
+          >
             🔥 Flash Sale
           </Link>
         </nav>
