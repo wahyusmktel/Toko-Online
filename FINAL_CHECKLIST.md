@@ -5,6 +5,7 @@
 ### Frontend Components ✓
 
 - [x] **Auth Pages** (`src/pages/Auth.tsx`)
+
   - Registration form with validation
   - Login form with error handling
   - API integration with backend
@@ -12,6 +13,7 @@
   - Auto-redirect on success
 
 - [x] **useAuth Hook** (`src/hooks/useAuth.ts`)
+
   - Global authentication state
   - Token persistence
   - Auto-restore on page load
@@ -26,16 +28,19 @@
 ### Backend Infrastructure ✓
 
 - [x] **Database** (MySQL shopee_red)
+
   - users table created
   - All required columns
   - Proper indexes
 
 - [x] **Authentication Endpoints**
+
   - POST /api/auth/register
   - POST /api/auth/login
   - GET /api/auth/me (protected)
 
 - [x] **Security Features**
+
   - Bcrypt password hashing (10 rounds)
   - JWT token generation (7 day expiry)
   - Password verification
@@ -72,23 +77,26 @@
 ### Immediate Tasks
 
 1. **Test the System**
+
    ```bash
    # Terminal 1
    cd backend && node src/index.js
-   
+
    # Terminal 2
    npm run dev
-   
+
    # Browser
    http://localhost:8083/auth/register
    ```
 
 2. **Verify Registration**
+
    - Create account with valid data
    - Verify user in database
    - Check token in localStorage
 
 3. **Verify Login**
+
    - Clear session (logout or new browser)
    - Login with same credentials
    - Verify navbar shows user
@@ -101,11 +109,13 @@
 ### Future Enhancements
 
 1. **Protected Routes**
+
    - Create ProtectedRoute component
    - Wrap checkout/profile pages
    - Redirect to login if not authenticated
 
 2. **Product Endpoints**
+
    ```
    GET /api/products
    GET /api/products/:id
@@ -115,6 +125,7 @@
    ```
 
 3. **Cart Endpoints**
+
    ```
    GET /api/cart
    POST /api/cart
@@ -124,6 +135,7 @@
    ```
 
 4. **Order Management**
+
    ```
    GET /api/orders
    GET /api/orders/:id
@@ -144,33 +156,36 @@
 ## Key Files Summary
 
 ### Frontend
-| File | Purpose | Status |
-|------|---------|--------|
-| src/pages/Auth.tsx | Registration & login forms | ✓ Complete |
-| src/hooks/useAuth.ts | Global auth state | ✓ Complete |
-| src/components/layout/Navbar.tsx | Navigation with auth UI | ✓ Complete |
-| src/pages/Index.tsx | Home page | ✓ Exists |
-| src/context/CartContext.tsx | Cart state | ✓ Exists |
+
+| File                             | Purpose                    | Status     |
+| -------------------------------- | -------------------------- | ---------- |
+| src/pages/Auth.tsx               | Registration & login forms | ✓ Complete |
+| src/hooks/useAuth.ts             | Global auth state          | ✓ Complete |
+| src/components/layout/Navbar.tsx | Navigation with auth UI    | ✓ Complete |
+| src/pages/Index.tsx              | Home page                  | ✓ Exists   |
+| src/context/CartContext.tsx      | Cart state                 | ✓ Exists   |
 
 ### Backend
-| File | Purpose | Status |
-|------|---------|--------|
-| src/index.js | Express app | ✓ Complete |
-| src/config/database.js | MySQL connection | ✓ Complete |
-| src/models/User.js | User CRUD | ✓ Complete |
-| src/controllers/authController.js | Auth logic | ✓ Complete |
-| src/routes/authRoutes.js | API routes | ✓ Complete |
-| src/middleware/auth.js | JWT middleware | ✓ Complete |
-| src/utils/jwt.js | Token utils | ✓ Complete |
-| src/utils/password.js | Password utils | ✓ Complete |
+
+| File                              | Purpose          | Status     |
+| --------------------------------- | ---------------- | ---------- |
+| src/index.js                      | Express app      | ✓ Complete |
+| src/config/database.js            | MySQL connection | ✓ Complete |
+| src/models/User.js                | User CRUD        | ✓ Complete |
+| src/controllers/authController.js | Auth logic       | ✓ Complete |
+| src/routes/authRoutes.js          | API routes       | ✓ Complete |
+| src/middleware/auth.js            | JWT middleware   | ✓ Complete |
+| src/utils/jwt.js                  | Token utils      | ✓ Complete |
+| src/utils/password.js             | Password utils   | ✓ Complete |
 
 ### Configuration
-| File | Purpose | Status |
-|------|---------|--------|
-| backend/.env | Environment variables | ✓ Created |
-| vite.config.ts | Frontend build config | ✓ Exists |
-| tailwind.config.ts | Tailwind CSS | ✓ Exists |
-| tsconfig.json | TypeScript config | ✓ Exists |
+
+| File               | Purpose               | Status    |
+| ------------------ | --------------------- | --------- |
+| backend/.env       | Environment variables | ✓ Created |
+| vite.config.ts     | Frontend build config | ✓ Exists  |
+| tailwind.config.ts | Tailwind CSS          | ✓ Exists  |
+| tsconfig.json      | TypeScript config     | ✓ Exists  |
 
 ---
 
@@ -233,18 +248,20 @@
 ## Quick Reference
 
 ### Start Development
+
 ```bash
 # Terminal 1: Backend
 cd backend
 node src/index.js
 
-# Terminal 2: Frontend  
+# Terminal 2: Frontend
 npm run dev
 
 # Browser: http://localhost:8083
 ```
 
 ### Database Management
+
 ```bash
 # Check users
 mysql -u root shopee_red -e "SELECT * FROM users;"
@@ -257,6 +274,7 @@ cd backend && node src/scripts/initDb.js
 ```
 
 ### Environment Variables
+
 ```bash
 # backend/.env
 DB_HOST=localhost
@@ -273,24 +291,31 @@ FRONTEND_URL=http://localhost:8083
 ## API Responses
 
 ### Success Response Format
+
 ```json
 {
   "success": true,
   "message": "Operation successful",
-  "data": { /* Response data */ }
+  "data": {
+    /* Response data */
+  }
 }
 ```
 
 ### Error Response Format
+
 ```json
 {
   "success": false,
   "message": "Error description",
-  "error": { /* Error details */ }
+  "error": {
+    /* Error details */
+  }
 }
 ```
 
 ### HTTP Status Codes
+
 - 200 OK - Success
 - 400 Bad Request - Invalid input
 - 401 Unauthorized - Auth failed/missing
@@ -302,6 +327,7 @@ FRONTEND_URL=http://localhost:8083
 ## Verification Commands
 
 ### Health Check
+
 ```bash
 # Backend running?
 curl http://localhost:5000
@@ -311,6 +337,7 @@ curl http://localhost:8083
 ```
 
 ### API Test
+
 ```bash
 # Test register
 curl -X POST http://localhost:5000/api/auth/register \
@@ -324,6 +351,7 @@ curl -X POST http://localhost:5000/api/auth/login \
 ```
 
 ### Database Check
+
 ```bash
 # Connect to MySQL
 mysql -u root
@@ -342,15 +370,15 @@ SELECT * FROM users;
 
 ## Troubleshooting Matrix
 
-| Problem | Cause | Solution |
-|---------|-------|----------|
-| Port 5000 in use | Another process | `lsof -i :5000` then kill |
-| MySQL connection error | DB not running | Start MySQL/XAMPP |
-| CORS error | Frontend URL mismatch | Update FRONTEND_URL in .env |
-| Login fails | Wrong credentials | Verify user in DB |
-| Token expires | Session old | Re-login |
-| localStorage empty | Browser private mode | Use normal mode |
-| Routes not found | Backend not started | Start backend server |
+| Problem                | Cause                 | Solution                    |
+| ---------------------- | --------------------- | --------------------------- |
+| Port 5000 in use       | Another process       | `lsof -i :5000` then kill   |
+| MySQL connection error | DB not running        | Start MySQL/XAMPP           |
+| CORS error             | Frontend URL mismatch | Update FRONTEND_URL in .env |
+| Login fails            | Wrong credentials     | Verify user in DB           |
+| Token expires          | Session old           | Re-login                    |
+| localStorage empty     | Browser private mode  | Use normal mode             |
+| Routes not found       | Backend not started   | Start backend server        |
 
 ---
 
@@ -381,8 +409,9 @@ All of the following must be true:
 ✅ **System is production-ready for authentication**
 
 All core features implemented and tested:
+
 - Secure registration & login
-- Token-based authentication  
+- Token-based authentication
 - Session persistence
 - Proper error handling
 - Database integration

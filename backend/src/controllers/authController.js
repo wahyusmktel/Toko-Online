@@ -133,3 +133,49 @@ export async function getCurrentUser(req, res, next) {
     next(error);
   }
 }
+
+// Update user profile
+export async function updateProfile(req, res, next) {
+  try {
+    const { fullName, phone, address, profileImage } = req.body;
+    const userId = req.userId;
+
+    // Validasi input
+    if (!fullName || fullName.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Nama lengkap harus diisi",
+      });
+    }
+
+    if (phone && !/^[0-9+\-\s()]*$/.test(phone)) {
+      return res.status(400).json({
+        success: false,
+        message: "Format nomor telepon tidak valid",
+      });
+    }
+
+    // Update profile
+    const updatedUser = await UserModel.updateProfile(userId, {
+      fullName,
+      phone: phone || null,
+      address: address || null,
+      profileImage: profileImage || null,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User tidak ditemukan",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Profil berhasil diperbarui",
+      data: updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+}

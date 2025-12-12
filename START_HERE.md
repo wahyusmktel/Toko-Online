@@ -9,6 +9,7 @@ Your complete authentication system is now **fully implemented and ready for tes
 ## What's Ready
 
 ### ✅ Backend (`http://localhost:5000`)
+
 - Express server with JWT authentication
 - MySQL database with users table
 - 3 secure API endpoints:
@@ -19,6 +20,7 @@ Your complete authentication system is now **fully implemented and ready for tes
 - JWT token generation & verification
 
 ### ✅ Frontend (`http://localhost:8083`)
+
 - Registration page with form validation
 - Login page with error handling
 - Global auth state (useAuth hook)
@@ -27,6 +29,7 @@ Your complete authentication system is now **fully implemented and ready for tes
 - Session persistence via localStorage
 
 ### ✅ Documentation (6 Files)
+
 1. **README_AUTH.md** - Quick start (2 min read)
 2. **SYSTEM_OVERVIEW.md** - Architecture & components
 3. **AUTHENTICATION_COMPLETE.md** - Full system details
@@ -40,6 +43,7 @@ Your complete authentication system is now **fully implemented and ready for tes
 ## 🚀 Quick Test (5 Minutes)
 
 ### Step 1: Verify Both Servers Running
+
 ```bash
 # Check backend
 curl http://localhost:5000
@@ -49,6 +53,7 @@ curl http://localhost:8083
 ```
 
 ### Step 2: Test Registration
+
 1. Open: `http://localhost:8083/auth/register`
 2. Fill form:
    ```
@@ -60,6 +65,7 @@ curl http://localhost:8083
 4. **Result**: Should see "Test User" in navbar ✓
 
 ### Step 3: Test Login (Fresh Session)
+
 1. Open new tab or incognito
 2. Go to: `http://localhost:8083/auth/login`
 3. Enter credentials from above
@@ -67,6 +73,7 @@ curl http://localhost:8083
 5. **Result**: Logged in, see user name in navbar ✓
 
 ### Step 4: Test Logout
+
 1. Click logout button (LogOut icon in navbar)
 2. **Result**: Logged out, navbar shows "Masuk" button ✓
 
@@ -75,27 +82,34 @@ curl http://localhost:8083
 ## How to Start
 
 ### Terminal 1 - Backend
+
 ```bash
 cd backend
 node src/index.js
 ```
-**Expected**: 
+
+**Expected**:
+
 ```
 ✓ MySQL connection successful
 ✓ Server running on http://localhost:5000
 ```
 
 ### Terminal 2 - Frontend
+
 ```bash
 npm run dev
 ```
+
 **Expected**:
+
 ```
 VITE v7.2.7 ready in ... ms
 ➜ Local: http://localhost:8083/
 ```
 
 ### Browser
+
 ```
 http://localhost:8083
 ```
@@ -104,16 +118,16 @@ http://localhost:8083
 
 ## Key Features Implemented
 
-| Feature | Status | Details |
-|---------|--------|---------|
-| User Registration | ✓ | Validation, email uniqueness, secure storage |
-| User Login | ✓ | Password verification, JWT generation |
-| Session Persistence | ✓ | Auto-restore from localStorage |
-| Logout | ✓ | Clear all auth data safely |
-| Form Validation | ✓ | Client & server-side |
-| Error Handling | ✓ | User-friendly toast messages |
-| Password Security | ✓ | Bcrypt 10 rounds hashing |
-| Profile Display | ✓ | User name in navbar |
+| Feature             | Status | Details                                      |
+| ------------------- | ------ | -------------------------------------------- |
+| User Registration   | ✓      | Validation, email uniqueness, secure storage |
+| User Login          | ✓      | Password verification, JWT generation        |
+| Session Persistence | ✓      | Auto-restore from localStorage               |
+| Logout              | ✓      | Clear all auth data safely                   |
+| Form Validation     | ✓      | Client & server-side                         |
+| Error Handling      | ✓      | User-friendly toast messages                 |
+| Password Security   | ✓      | Bcrypt 10 rounds hashing                     |
+| Profile Display     | ✓      | User name in navbar                          |
 
 ---
 
@@ -160,6 +174,7 @@ backend/
 ## API Testing
 
 ### Test Registration
+
 ```bash
 curl -X POST http://localhost:5000/api/auth/register \
   -H "Content-Type: application/json" \
@@ -171,6 +186,7 @@ curl -X POST http://localhost:5000/api/auth/register \
 ```
 
 ### Test Login
+
 ```bash
 curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
@@ -184,13 +200,13 @@ curl -X POST http://localhost:5000/api/auth/login \
 
 ## Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| Port 5000 in use | Kill process or restart |
-| MySQL error | Verify MySQL is running |
-| CORS error | Check FRONTEND_URL in .env |
-| Login fails | Verify user in database |
-| Session lost | Clear browser cache |
+| Problem          | Solution                   |
+| ---------------- | -------------------------- |
+| Port 5000 in use | Kill process or restart    |
+| MySQL error      | Verify MySQL is running    |
+| CORS error       | Check FRONTEND_URL in .env |
+| Login fails      | Verify user in database    |
+| Session lost     | Clear browser cache        |
 
 ---
 
@@ -212,6 +228,7 @@ cd backend && node src/scripts/initDb.js
 ## What's Next
 
 After verifying authentication works:
+
 1. Create protected routes for checkout
 2. Build product catalog endpoints
 3. Implement shopping cart backend
@@ -223,19 +240,23 @@ After verifying authentication works:
 ## Important Notes
 
 ✅ **Both servers must be running for authentication to work**
+
 - Backend: `http://localhost:5000`
 - Frontend: `http://localhost:8083`
 
 ✅ **Token stored in browser localStorage**
+
 - Key: `authToken`
 - Key: `user`
 - Persists across page reloads
 
 ✅ **Password hashed with bcrypt**
+
 - Never stored in plaintext
 - Verified during login
 
 ✅ **JWT tokens valid for 7 days**
+
 - Can be adjusted in `backend/.env`
 - Property: `JWT_EXPIRE=7d`
 
@@ -244,6 +265,7 @@ After verifying authentication works:
 ## Success Criteria
 
 You'll know it's working when:
+
 1. ✓ Can register with validation
 2. ✓ Can login with credentials
 3. ✓ See user name in navbar
@@ -258,6 +280,7 @@ You'll know it's working when:
 ## Documentation Files
 
 For more information, read:
+
 - **README_AUTH.md** - Quick reference
 - **SYSTEM_OVERVIEW.md** - Full architecture
 - **TESTING_GUIDE.md** - Step-by-step tests
@@ -293,6 +316,7 @@ mysql -u root shopee_red
 ## Summary
 
 ✅ **Everything is implemented and ready**
+
 - Backend API endpoints: Working
 - Frontend pages: Working
 - Database: Initialized

@@ -9,11 +9,13 @@ The full authentication system has been successfully integrated between the Reac
 ## What Was Implemented
 
 ### 1. Backend Authentication Endpoints ✓
+
 - **POST /api/auth/register** - User registration with email/password
 - **POST /api/auth/login** - User authentication returning JWT token
 - **GET /api/auth/me** - Protected endpoint to get current user
 
 **Technologies Used:**
+
 - Express.js (HTTP framework)
 - MySQL (user data storage)
 - JWT (jsonwebtoken) - Token generation & verification
@@ -23,6 +25,7 @@ The full authentication system has been successfully integrated between the Reac
 ### 2. Frontend Authentication Pages ✓
 
 **Registration (`/auth/register`)**
+
 - Full name, email, password fields
 - Client-side validation (email format, password length, password match)
 - API call to backend
@@ -32,6 +35,7 @@ The full authentication system has been successfully integrated between the Reac
 - Updates global auth state
 
 **Login (`/auth/login`)**
+
 - Email & password fields
 - Validation for required fields
 - API call to backend
@@ -42,6 +46,7 @@ The full authentication system has been successfully integrated between the Reac
 ### 3. Global Auth State Management ✓
 
 **useAuth Hook** (`src/hooks/useAuth.ts`)
+
 - Centralized authentication state
 - Functions: `login()`, `logout()`
 - Auto-loads from localStorage on app start
@@ -51,6 +56,7 @@ The full authentication system has been successfully integrated between the Reac
 ### 4. Navigation Updates ✓
 
 **Navbar Component** (`src/components/layout/Navbar.tsx`)
+
 - **Authenticated State**: Shows user's full name + logout button
 - **Unauthenticated State**: Shows "Masuk" (Login) button
 - Logout clears all auth data and redirects to home
@@ -63,16 +69,20 @@ The full authentication system has been successfully integrated between the Reac
 ### Start the Systems
 
 **Terminal 1 - Backend:**
+
 ```bash
 cd backend
 node src/index.js
 ```
+
 Expected: ✓ MySQL connection successful, ✓ Server running on http://localhost:5000
 
 **Terminal 2 - Frontend:**
+
 ```bash
 npm run dev
 ```
+
 Expected: VITE ready at http://localhost:8083
 
 ### Test Registration Flow
@@ -170,6 +180,7 @@ Expected: VITE ready at http://localhost:8083
 ## Data Flow Examples
 
 ### Registration Flow
+
 ```
 1. User fills form in /auth/register
    ↓
@@ -192,6 +203,7 @@ Expected: VITE ready at http://localhost:8083
 ```
 
 ### Login Flow
+
 ```
 1. User enters email & password in /auth/login
    ↓
@@ -219,6 +231,7 @@ Expected: VITE ready at http://localhost:8083
 ## Database Schema
 
 **users table:**
+
 ```sql
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -241,16 +254,19 @@ CREATE TABLE users (
 ## Files Modified/Created
 
 ### New Files
+
 - `src/hooks/useAuth.ts` - Global auth state management
 - `AUTH_INTEGRATION_COMPLETE.md` - Integration documentation
 - `TESTING_GUIDE.md` - Comprehensive testing procedures
 
 ### Modified Files
+
 - `src/pages/Auth.tsx` - Backend API integration
 - `src/components/layout/Navbar.tsx` - Auth UI integration
 - `.github/copilot-instructions.md` - Updated with backend arch
 
 ### Backend Files (Already Complete)
+
 - `backend/src/config/database.js`
 - `backend/src/models/User.js`
 - `backend/src/controllers/authController.js`
@@ -266,6 +282,7 @@ CREATE TABLE users (
 ## Current Status
 
 ### ✓ Completed
+
 - [x] Backend API endpoints (register, login, get current user)
 - [x] MySQL database schema and initialization
 - [x] JWT token generation & verification
@@ -281,6 +298,7 @@ CREATE TABLE users (
 - [x] Both servers running and tested
 
 ### 🔄 Next Steps (Optional)
+
 - [ ] Protected route wrapper component
 - [ ] Product endpoints backend
 - [ ] Cart persistence to backend
@@ -295,21 +313,25 @@ CREATE TABLE users (
 ## Quick Command Reference
 
 **Start Backend**
+
 ```bash
 cd backend && node src/index.js
 ```
 
 **Start Frontend**
+
 ```bash
 npm run dev
 ```
 
 **Reinitialize Database**
+
 ```bash
 cd backend && node src/scripts/initDb.js
 ```
 
 **Test API Endpoints**
+
 ```bash
 # Register
 curl -X POST http://localhost:5000/api/auth/register \
@@ -330,13 +352,13 @@ curl -X GET http://localhost:5000/api/auth/me \
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
+| Issue                    | Solution                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------- |
 | Port 5000 already in use | Kill process: `netstat -ano \| findstr :5000`, then `taskkill /PID [PID] /F` |
-| MySQL connection fails | Check DB credentials in `backend/.env` |
-| CORS errors | Update `FRONTEND_URL` in `backend/.env` to `http://localhost:8083` |
-| Token not persisting | Check localStorage enabled in browser |
-| Duplicate email error | Clear database: `mysql -u root shopee_red -e "DELETE FROM users;"` |
+| MySQL connection fails   | Check DB credentials in `backend/.env`                                       |
+| CORS errors              | Update `FRONTEND_URL` in `backend/.env` to `http://localhost:8083`           |
+| Token not persisting     | Check localStorage enabled in browser                                        |
+| Duplicate email error    | Clear database: `mysql -u root shopee_red -e "DELETE FROM users;"`           |
 
 ---
 

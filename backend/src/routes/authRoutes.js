@@ -3,6 +3,7 @@ import {
   register,
   login,
   getCurrentUser,
+  updateProfile,
 } from "../controllers/authController.js";
 import { authenticateToken } from "../middleware/auth.js";
 
@@ -14,5 +15,6 @@ router.post("/login", login);
 
 // Protected routes
 router.get("/me", authenticateToken, getCurrentUser);
+router.put("/me", authenticateToken, updateProfile);
 
 export default router;

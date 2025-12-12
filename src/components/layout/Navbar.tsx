@@ -7,6 +7,7 @@ import {
   Menu,
   X,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -125,6 +126,15 @@ export function Navbar() {
                     {user.fullName}
                   </span>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => navigate("/profile")}
+                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                  title="Edit Profile"
+                >
+                  <Settings className="h-5 w-5" />
+                </Button>
                 <Button
                   variant="ghost"
                   size="icon"

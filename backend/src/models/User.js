@@ -33,4 +33,16 @@ export class UserModel {
   static async verifyPassword(plainPassword, hashedPassword) {
     return comparePassword(plainPassword, hashedPassword);
   }
+
+  // Update user profile
+  static async updateProfile(id, updateData) {
+    const { fullName, phone, address, profileImage } = updateData;
+    const query =
+      "UPDATE users SET full_name = ?, phone = ?, address = ?, profile_image = ? WHERE id = ?";
+
+    await pool.query(query, [fullName, phone, address, profileImage, id]);
+
+    // Return updated user data
+    return this.findById(id);
+  }
 }

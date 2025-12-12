@@ -7,6 +7,7 @@
 ## What's Working
 
 ### Frontend (`http://localhost:8083`)
+
 ```
 ✓ Registration Page (/auth/register)
   • Full form with validation
@@ -33,6 +34,7 @@
 ```
 
 ### Backend (`http://localhost:5000`)
+
 ```
 ✓ Express Server
   • Running on port 5000
@@ -52,6 +54,7 @@
 ```
 
 ### Database
+
 ```
 ✓ MySQL Database
   • Database: shopee_red
@@ -66,20 +69,24 @@
 ## Quick Start
 
 ### Prerequisites
+
 Ensure both are running:
 
 **Backend:**
+
 ```bash
 cd backend
 node src/index.js
 ```
 
 **Frontend:**
+
 ```bash
 npm run dev
 ```
 
 ### Test Registration
+
 1. Go to `http://localhost:8083/auth/register`
 2. Fill form with:
    - Name: Your Name
@@ -89,12 +96,14 @@ npm run dev
 4. ✓ Redirected to home, see your name in navbar
 
 ### Test Login (in new browser/incognito)
+
 1. Go to `http://localhost:8083/auth/login`
 2. Enter email & password from above
 3. Click "Masuk"
 4. ✓ Logged in, see your name in navbar
 
 ### Test Logout
+
 1. Click logout button (LogOut icon) in navbar
 2. ✓ Logged out, see "Masuk" button
 
@@ -102,23 +111,24 @@ npm run dev
 
 ## Features Summary
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| User Registration | ✓ | Email validation, password hashing |
-| User Login | ✓ | JWT token generation |
-| Session Persistence | ✓ | localStorage auto-restore |
-| Logout | ✓ | Clears all auth data |
-| Form Validation | ✓ | Client & server-side |
-| Error Handling | ✓ | Toast notifications |
-| Protected Routes | ✓ | Backend /api/auth/me |
-| Password Security | ✓ | bcrypt 10 salt rounds |
-| CORS | ✓ | Frontend allowed |
+| Feature             | Status | Notes                              |
+| ------------------- | ------ | ---------------------------------- |
+| User Registration   | ✓      | Email validation, password hashing |
+| User Login          | ✓      | JWT token generation               |
+| Session Persistence | ✓      | localStorage auto-restore          |
+| Logout              | ✓      | Clears all auth data               |
+| Form Validation     | ✓      | Client & server-side               |
+| Error Handling      | ✓      | Toast notifications                |
+| Protected Routes    | ✓      | Backend /api/auth/me               |
+| Password Security   | ✓      | bcrypt 10 salt rounds              |
+| CORS                | ✓      | Frontend allowed                   |
 
 ---
 
 ## Tech Stack
 
 ### Frontend
+
 - React 19.2.1 with TypeScript
 - Vite 7.2.7 (build tool)
 - React Router v6 (navigation)
@@ -126,12 +136,14 @@ npm run dev
 - Lucide React (icons)
 
 ### Backend
+
 - Express 4.18.2
 - MySQL 8.0 (MariaDB via XAMPP)
 - jwt (jsonwebtoken 8.5.1)
 - bcrypt 5.0.1
 
 ### Authentication
+
 - JWT tokens (7 day expiry)
 - Bcrypt password hashing
 - localStorage persistence
@@ -192,6 +204,7 @@ shopee-red-showcase/
 ## API Reference
 
 ### Register User
+
 ```
 POST /api/auth/register
 Content-Type: application/json
@@ -217,6 +230,7 @@ Response (200 OK):
 ```
 
 ### Login User
+
 ```
 POST /api/auth/login
 Content-Type: application/json
@@ -243,6 +257,7 @@ Response (200 OK):
 ```
 
 ### Get Current User (Protected)
+
 ```
 GET /api/auth/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -289,24 +304,27 @@ App
 ## State Management
 
 ### useAuth Hook (Global)
+
 ```typescript
 const {
-  user,              // Current user object
-  token,             // JWT token
-  isAuthenticated,   // Boolean flag
-  isLoading,         // Loading state
-  login,             // Function to set auth
-  logout             // Function to clear auth
+  user, // Current user object
+  token, // JWT token
+  isAuthenticated, // Boolean flag
+  isLoading, // Loading state
+  login, // Function to set auth
+  logout, // Function to clear auth
 } = useAuth();
 ```
 
 ### localStorage Persistence
+
 ```
 Key: "authToken" → JWT token
 Key: "user"      → User object (JSON)
 ```
 
 Automatically:
+
 - Saved on login
 - Loaded on app start
 - Cleared on logout
@@ -315,15 +333,15 @@ Automatically:
 
 ## Error Handling
 
-| Scenario | Response | Frontend Display |
-|----------|----------|------------------|
-| Invalid email format | 400 Bad Request | Toast: "Invalid email" |
-| Email already exists | 409 Conflict | Toast: "Email already registered" |
-| Password too short | 400 Bad Request | Toast: "Password too short" |
-| Invalid credentials | 401 Unauthorized | Toast: "Invalid email or password" |
-| Missing token | 401 Unauthorized | Redirect to login |
-| Expired token | 401 Unauthorized | Redirect to login |
-| Server error | 500 Server Error | Toast: "Server error" |
+| Scenario             | Response         | Frontend Display                   |
+| -------------------- | ---------------- | ---------------------------------- |
+| Invalid email format | 400 Bad Request  | Toast: "Invalid email"             |
+| Email already exists | 409 Conflict     | Toast: "Email already registered"  |
+| Password too short   | 400 Bad Request  | Toast: "Password too short"        |
+| Invalid credentials  | 401 Unauthorized | Toast: "Invalid email or password" |
+| Missing token        | 401 Unauthorized | Redirect to login                  |
+| Expired token        | 401 Unauthorized | Redirect to login                  |
+| Server error         | 500 Server Error | Toast: "Server error"              |
 
 ---
 
@@ -390,24 +408,28 @@ npm run lint                   # Check code
 ## Support & Troubleshooting
 
 ### Backend won't start
+
 1. Check port 5000 is free
 2. Verify MySQL is running
 3. Check .env has correct DB credentials
 4. Run: `cd backend && node src/scripts/initDb.js`
 
 ### Frontend won't connect to backend
+
 1. Verify backend is running on port 5000
 2. Check FRONTEND_URL in backend/.env
 3. Look for CORS errors in browser console
 4. Try: `curl http://localhost:5000/health` (if health endpoint added)
 
 ### User can't login
+
 1. Verify user exists in database
 2. Check password is correct
 3. Verify token is stored in localStorage
 4. Check browser console for errors
 
 ### Session lost after refresh
+
 1. Check localStorage is enabled
 2. Verify token is in localStorage
 3. Clear browser cache and try again
@@ -419,6 +441,7 @@ npm run lint                   # Check code
 🎉 **The authentication system is production-ready!**
 
 **Users can:**
+
 - Register with validation
 - Login securely
 - Stay logged in across sessions
@@ -426,6 +449,7 @@ npm run lint                   # Check code
 - Logout safely
 
 **System includes:**
+
 - Secure password hashing (bcrypt)
 - JWT token authentication
 - Form validation
@@ -434,6 +458,7 @@ npm run lint                   # Check code
 - Auto session restore
 
 **Ready to expand with:**
+
 - Product catalog
 - Shopping cart
 - Order management
