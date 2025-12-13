@@ -12,6 +12,11 @@ import Checkout from "./pages/Checkout";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import SellerDashboard from "./pages/SellerDashboard";
+import SellerProducts from "./pages/SellerProducts";
+import SellerFlashSale from "./pages/SellerFlashSale";
+import SellerAuth from "./pages/SellerAuth";
+import SellerOrders from "./pages/SellerOrders";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +37,11 @@ const App = () => (
             <Route path="/auth/login" element={<Auth mode="login" />} />
             <Route path="/auth/register" element={<Auth mode="register" />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/seller" element={<SellerDashboard />} />
+            <Route path="/seller/products" element={<SellerProducts />} />
+            <Route path="/seller/flash-sale" element={<SellerFlashSale />} />
+            <Route path="/seller/orders" element={<SellerOrders />} />
+            <Route path="/seller/auth" element={<SellerAuth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

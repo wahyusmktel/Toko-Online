@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { testConnection } from "./config/database.js";
 import { errorHandler } from "./middleware/auth.js";
 import authRoutes from "./routes/authRoutes.js";
+import sellerRoutes from "./routes/sellerRoutes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/seller", sellerRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
